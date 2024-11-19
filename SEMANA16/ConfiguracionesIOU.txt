@@ -1,0 +1,512 @@
+Running conf IOU1
+
+IOU1#show running-config
+Building configuration...
+
+Current configuration : 2640 bytes
+!
+! Last configuration change at 11:51:50 CST Thu Oct 24 2024
+!
+version 15.1
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+service compress-config
+!
+hostname IOU1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+logging discriminator EXCESS severity drops 6 msg-body drops EXCESSCOLL
+logging buffered 50000
+logging console discriminator EXCESS
+!
+no aaa new-model
+clock timezone CST -6 0
+no ipv6 cef
+ipv6 multicast rpf use-bgp
+no ip icmp rate-limit unreachable
+!
+no ip domain-lookup
+no ip cef
+!
+!
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+spanning-tree vlan 10,20,30 priority 4096
+!
+!
+!
+!
+vlan internal allocation policy ascending
+!
+ip tcp synwait-time 5
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Port-channel1
+ switchport
+ switchport trunk encapsulation dot1q
+ switchport trunk allowed vlan 10,20,30
+ switchport mode trunk
+!
+interface Port-channel2
+ switchport
+ switchport trunk encapsulation dot1q
+ switchport trunk allowed vlan 10,20,30
+ switchport mode trunk
+!
+interface Ethernet0/0
+ switchport trunk encapsulation dot1q
+ switchport trunk allowed vlan 10,20,30
+ switchport mode trunk
+ duplex auto
+ channel-group 1 mode desirable
+!
+interface Ethernet0/1
+ switchport trunk encapsulation dot1q
+ switchport trunk allowed vlan 10,20,30
+ switchport mode trunk
+ duplex auto
+ channel-group 1 mode desirable
+!
+interface Ethernet0/2
+ switchport trunk encapsulation dot1q
+ switchport trunk allowed vlan 10,20,30
+ switchport mode trunk
+ duplex auto
+ channel-group 2 mode active
+!
+interface Ethernet0/3
+ switchport trunk encapsulation dot1q
+ switchport trunk allowed vlan 10,20,30
+ switchport mode trunk
+ duplex auto
+ channel-group 2 mode active
+!
+interface Ethernet1/0
+ duplex auto
+!
+interface Ethernet1/1
+ duplex auto
+!
+interface Ethernet1/2
+ duplex auto
+!
+interface Ethernet1/3
+ duplex auto
+!
+interface Ethernet2/0
+ duplex auto
+!
+interface Ethernet2/1
+ duplex auto
+!
+interface Ethernet2/2
+ duplex auto
+!
+interface Ethernet2/3
+ duplex auto
+!
+interface Ethernet3/0
+ switchport trunk encapsulation dot1q
+ switchport trunk allowed vlan 10,20,30
+ switchport mode trunk
+!
+interface Ethernet3/1
+ switchport access vlan 10
+ switchport mode access
+ duplex auto
+!
+interface Ethernet3/2
+ switchport access vlan 20
+ switchport mode access
+ duplex auto
+!
+interface Ethernet3/3
+ switchport access vlan 30
+ switchport mode access
+ duplex auto
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+!
+no ip http server
+!
+!
+!
+!
+!
+control-plane
+!
+!
+line con 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+line aux 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+line vty 0 4
+ login
+!
+end
+
+
+
+Spanning-Tree IOU1
+
+IOU1#show spanning-tree
+
+VLAN0001
+  Spanning tree enabled protocol ieee
+  Root ID    Priority    32769
+             Address     aabb.cc00.0100
+             This bridge is the root
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+
+  Bridge ID  Priority    32769  (priority 32768 sys-id-ext 1)
+             Address     aabb.cc00.0100
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+             Aging Time  300 sec
+
+Interface           Role Sts Cost      Prio.Nbr Type
+------------------- ---- --- --------- -------- --------------------------------
+Et1/0               Desg FWD 100       128.5    Shr
+Et1/1               Desg FWD 100       128.6    Shr
+Et1/2               Desg FWD 100       128.7    Shr
+Et1/3               Desg FWD 100       128.8    Shr
+Et2/0               Desg FWD 100       128.9    Shr
+Et2/1               Desg FWD 100       128.10   Shr
+Et2/2               Desg FWD 100       128.11   Shr
+Et2/3               Desg FWD 100       128.12   Shr
+
+
+
+VLAN0010
+  Spanning tree enabled protocol ieee
+  Root ID    Priority    4106
+             Address     aabb.cc00.0100
+             This bridge is the root
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+
+  Bridge ID  Priority    4106   (priority 4096 sys-id-ext 10)
+             Address     aabb.cc00.0100
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+             Aging Time  300 sec
+
+Interface           Role Sts Cost      Prio.Nbr Type
+------------------- ---- --- --------- -------- --------------------------------
+Et3/0               Desg FWD 100       128.13   Shr
+Et3/1               Desg FWD 100       128.14   Shr
+Po2                 Desg FWD 56        128.65   Shr
+Po1                 Desg FWD 56        128.66   Shr
+
+
+
+VLAN0020
+  Spanning tree enabled protocol ieee
+  Root ID    Priority    4116
+             Address     aabb.cc00.0100
+             This bridge is the root
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+
+  Bridge ID  Priority    4116   (priority 4096 sys-id-ext 20)
+             Address     aabb.cc00.0100
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+             Aging Time  300 sec
+
+Interface           Role Sts Cost      Prio.Nbr Type
+------------------- ---- --- --------- -------- --------------------------------
+Et3/0               Desg FWD 100       128.13   Shr
+Et3/2               Desg FWD 100       128.15   Shr
+Po2                 Desg FWD 56        128.65   Shr
+Po1                 Desg FWD 56        128.66   Shr
+
+
+
+VLAN0030
+  Spanning tree enabled protocol ieee
+  Root ID    Priority    4126
+             Address     aabb.cc00.0100
+             This bridge is the root
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+
+  Bridge ID  Priority    4126   (priority 4096 sys-id-ext 30)
+             Address     aabb.cc00.0100
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+             Aging Time  300 sec
+
+Interface           Role Sts Cost      Prio.Nbr Type
+------------------- ---- --- --------- -------- --------------------------------
+Et3/0               Desg FWD 100       128.13   Shr
+Et3/3               Desg FWD 100       128.16   Shr
+Po2                 Desg FWD 56        128.65   Shr
+Po1                 Desg FWD 56        128.66   Shr
+
+
+Etherchannel summary IOU1
+
+IOU1#show etherchannel summary
+Flags:  D - down        P - bundled in port-channel
+        I - stand-alone s - suspended
+        H - Hot-standby (LACP only)
+        R - Layer3      S - Layer2
+        U - in use      f - failed to allocate aggregator
+
+        M - not in use, minimum links not met
+        u - unsuitable for bundling
+        w - waiting to be aggregated
+        d - default port
+
+
+Number of channel-groups in use: 2
+Number of aggregators:           2
+
+Group  Port-channel  Protocol    Ports
+------+-------------+-----------+-----------------------------------------------
+1      Po1(SU)         PAgP      Et0/0(P)    Et0/1(P)
+2      Po2(SU)         LACP      Et0/2(P)    Et0/3(P)
+
+
+
+IOU2#show etherchannel summary
+Flags:  D - down        P - bundled in port-channel
+        I - stand-alone s - suspended
+        H - Hot-standby (LACP only)
+        R - Layer3      S - Layer2
+        U - in use      f - failed to allocate aggregator
+
+        M - not in use, minimum links not met
+        u - unsuitable for bundling
+        w - waiting to be aggregated
+        d - default port
+
+
+Number of channel-groups in use: 2
+Number of aggregators:           2
+
+Group  Port-channel  Protocol    Ports
+------+-------------+-----------+-----------------------------------------------
+2      Po2(SU)         LACP      Et0/2(P)    Et0/3(P)
+3      Po3(SU)         LACP      Et1/0(P)    Et1/1(P)
+
+IOU2#show sp
+IOU2#show spanning-tree
+
+VLAN0001
+  Spanning tree enabled protocol ieee
+  Root ID    Priority    32769
+             Address     aabb.cc00.0200
+             This bridge is the root
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+
+  Bridge ID  Priority    32769  (priority 32768 sys-id-ext 1)
+             Address     aabb.cc00.0200
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+             Aging Time  300 sec
+
+Interface           Role Sts Cost      Prio.Nbr Type
+------------------- ---- --- --------- -------- --------------------------------
+Et0/0               Desg FWD 100       128.1    Shr
+Et0/1               Desg FWD 100       128.2    Shr
+Et1/2               Desg FWD 100       128.7    Shr
+Et1/3               Desg FWD 100       128.8    Shr
+Et2/0               Desg FWD 100       128.9    Shr
+Et2/1               Desg FWD 100       128.10   Shr
+Et2/2               Desg FWD 100       128.11   Shr
+Et2/3               Desg FWD 100       128.12   Shr
+
+
+
+VLAN0010
+  Spanning tree enabled protocol ieee
+  Root ID    Priority    4106
+             Address     aabb.cc00.0100
+             Cost        56
+             Port        66 (Port-channel2)
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+
+  Bridge ID  Priority    8202   (priority 8192 sys-id-ext 10)
+             Address     aabb.cc00.0200
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+             Aging Time  300 sec
+
+Interface           Role Sts Cost      Prio.Nbr Type
+------------------- ---- --- --------- -------- --------------------------------
+Et3/0               Desg FWD 100       128.13   Shr
+Et3/1               Desg FWD 100       128.14   Shr
+Po3                 Desg FWD 56        128.65   Shr
+Po2                 Root FWD 56        128.66   Shr
+
+
+
+VLAN0020
+  Spanning tree enabled protocol ieee
+  Root ID    Priority    4116
+             Address     aabb.cc00.0100
+             Cost        56
+             Port        66 (Port-channel2)
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+
+  Bridge ID  Priority    8212   (priority 8192 sys-id-ext 20)
+             Address     aabb.cc00.0200
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+             Aging Time  300 sec
+
+Interface           Role Sts Cost      Prio.Nbr Type
+------------------- ---- --- --------- -------- --------------------------------
+Et3/0               Desg FWD 100       128.13   Shr
+Et3/2               Desg FWD 100       128.15   Shr
+Po3                 Desg FWD 56        128.65   Shr
+Po2                 Root FWD 56        128.66   Shr
+
+
+
+VLAN0030
+  Spanning tree enabled protocol ieee
+  Root ID    Priority    4126
+             Address     aabb.cc00.0100
+             Cost        56
+             Port        66 (Port-channel2)
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+
+  Bridge ID  Priority    8222   (priority 8192 sys-id-ext 30)
+             Address     aabb.cc00.0200
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+             Aging Time  300 sec
+
+Interface           Role Sts Cost      Prio.Nbr Type
+------------------- ---- --- --------- -------- --------------------------------
+Et3/0               Desg FWD 100       128.13   Shr
+Et3/3               Desg FWD 100       128.16   Shr
+Po3                 Desg FWD 56        128.65   Shr
+Po2                 Root FWD 56        128.66   Shr
+
+
+
+
+IOU3#show etherchannel summary
+Flags:  D - down        P - bundled in port-channel
+        I - stand-alone s - suspended
+        H - Hot-standby (LACP only)
+        R - Layer3      S - Layer2
+        U - in use      f - failed to allocate aggregator
+
+        M - not in use, minimum links not met
+        u - unsuitable for bundling
+        w - waiting to be aggregated
+        d - default port
+
+
+Number of channel-groups in use: 2
+Number of aggregators:           2
+
+Group  Port-channel  Protocol    Ports
+------+-------------+-----------+-----------------------------------------------
+1      Po1(SU)         PAgP      Et0/0(P)    Et0/1(P)
+3      Po3(SU)         LACP      Et1/0(P)    Et1/1(P)
+
+IOU3#show sp
+IOU3#show spanning-tree
+
+VLAN0001
+  Spanning tree enabled protocol ieee
+  Root ID    Priority    32769
+             Address     aabb.cc00.0300
+             This bridge is the root
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+
+  Bridge ID  Priority    32769  (priority 32768 sys-id-ext 1)
+             Address     aabb.cc00.0300
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+             Aging Time  300 sec
+
+Interface           Role Sts Cost      Prio.Nbr Type
+------------------- ---- --- --------- -------- --------------------------------
+Et0/2               Desg FWD 100       128.3    Shr
+Et0/3               Desg FWD 100       128.4    Shr
+Et1/2               Desg FWD 100       128.7    Shr
+Et1/3               Desg FWD 100       128.8    Shr
+Et2/0               Desg FWD 100       128.9    Shr
+Et2/1               Desg FWD 100       128.10   Shr
+Et2/2               Desg FWD 100       128.11   Shr
+Et2/3               Desg FWD 100       128.12   Shr
+Et3/0               Desg FWD 100       128.13   Shr
+
+
+
+VLAN0010
+  Spanning tree enabled protocol ieee
+  Root ID    Priority    4106
+             Address     aabb.cc00.0100
+             Cost        56
+             Port        66 (Port-channel1)
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+
+  Bridge ID  Priority    12298  (priority 12288 sys-id-ext 10)
+             Address     aabb.cc00.0300
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+             Aging Time  300 sec
+
+Interface           Role Sts Cost      Prio.Nbr Type
+------------------- ---- --- --------- -------- --------------------------------
+Et3/1               Desg FWD 100       128.14   Shr
+Po3                 Altn BLK 56        128.65   Shr
+Po1                 Root FWD 56        128.66   Shr
+
+
+
+VLAN0020
+  Spanning tree enabled protocol ieee
+  Root ID    Priority    4116
+             Address     aabb.cc00.0100
+             Cost        56
+             Port        66 (Port-channel1)
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+
+  Bridge ID  Priority    12308  (priority 12288 sys-id-ext 20)
+             Address     aabb.cc00.0300
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+             Aging Time  300 sec
+
+Interface           Role Sts Cost      Prio.Nbr Type
+------------------- ---- --- --------- -------- --------------------------------
+Et3/2               Desg FWD 100       128.15   Shr
+Po3                 Altn BLK 56        128.65   Shr
+Po1                 Root FWD 56        128.66   Shr
+
+
+
+VLAN0030
+  Spanning tree enabled protocol ieee
+  Root ID    Priority    4126
+             Address     aabb.cc00.0100
+             Cost        56
+             Port        66 (Port-channel1)
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+
+  Bridge ID  Priority    12318  (priority 12288 sys-id-ext 30)
+             Address     aabb.cc00.0300
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+             Aging Time  300 sec
+
+Interface           Role Sts Cost      Prio.Nbr Type
+------------------- ---- --- --------- -------- --------------------------------
+Et3/3               Desg FWD 100       128.16   Shr
+Po3                 Altn BLK 56        128.65   Shr
+Po1                 Root FWD 56        128.66   Shr
